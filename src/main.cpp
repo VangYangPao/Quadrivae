@@ -2099,62 +2099,58 @@ int64_t GetBlockValue(int nHeight)
             return 10000 * COIN;
     }
     
- if(IsTreasuryBlock(nHeight)) {
+    if(IsTreasuryBlock(nHeight)) {
 		LogPrintf("GetBlockValue(): this is a treasury block\n");
 		nSubsidy = GetTreasuryAward(nHeight);        
-	    } else {
-		 if (nHeight == 0) {
-			nSubsidy = 3000000 * COIN;
-		} else if (nHeight < 2000 && nHeight > 0) {
-			nSubsidy = 1 * COIN;
-		} else if (nHeight < 23600 && nHeight >= 2000) {
-			nSubsidy = 60 * COIN;
-		} else if (nHeight < 300000 && nHeight >= 23600) {
-			nSubsidy = 30 * COIN;
-		} else if (nHeight < 1000000 && nHeight >= 300000) {
-			nSubsidy = 15 * COIN;
-		} else if (nHeight < 2000000 && nHeight >= 1000000) {
-			nSubsidy = 9 * COIN;
-		} else if (nHeight < 3000000 && nHeight >= 2000000) {
-			nSubsidy = 6 * COIN;
-		} else if (nHeight < 4000000 && nHeight >= 3000000) {
-			nSubsidy = 3 * COIN;
-		} else if (nHeight >= 4000000) {
-			nSubsidy = 3 * COIN;
-		}
-		  else {
-			nSubsidy = 0 * COIN;
-		}
-	    }
-	
-	    return nSubsidy;
+    } else {
+        if (nHeight == 0) {
+            nSubsidy = 3000000 * COIN;
+        } else if (nHeight < 2000 && nHeight > 0) {
+            nSubsidy = 1 * COIN;
+        } else if (nHeight < 23600 && nHeight >= 2000) {
+            nSubsidy = 60 * COIN;
+        } else if (nHeight < 300000 && nHeight >= 23600) {
+            nSubsidy = 30 * COIN;
+        } else if (nHeight < 1000000 && nHeight >= 300000) {
+            nSubsidy = 15 * COIN;
+        } else if (nHeight < 2000000 && nHeight >= 1000000) {
+            nSubsidy = 9 * COIN;
+        } else if (nHeight < 3000000 && nHeight >= 2000000) {
+            nSubsidy = 6 * COIN;
+        } else if (nHeight < 4000000 && nHeight >= 3000000) {
+            nSubsidy = 3 * COIN;
+        } else if (nHeight >= 4000000) {
+            nSubsidy = 3 * COIN;
+        } else {
+            nSubsidy = 0 * COIN;
+        }
 	}
-
-
-	int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
-	{
-	    int64_t ret = 0;
-
-	    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
-		if (nHeight < 200)
-		    return 0;
-	    }
 	
-		// 3:2 Ratio Masternodes
-		if (nHeight <= 100) {
-		      ret = blockValue * 0;
-		} else if (nHeight > 100) {
-			  ret = blockValue * 2 / 3; 
-		
-		}
-			
-	
-	    return ret;
-	}
+	return nSubsidy;
+}
 
-	//Treasury blocks start from 1,00,000 and then each 10,000 th block
-	int nStartTreasuryBlock = 100;
-	int nTreasuryBlockStep = 10;
+int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
+{
+    int64_t ret = 0;
+
+    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+    if (nHeight < 200)
+        return 0;
+    }
+
+    // 3:2 Ratio Masternodes
+    if (nHeight <= 5) {//???
+            ret = blockValue * 0;
+    } else {
+            ret = blockValue * 2 / 3; 		
+    }			
+
+    return ret;
+}
+
+//Treasury blocks start from 1,00,000 and then each 10,000 th block
+int nStartTreasuryBlock = 50;
+int nTreasuryBlockStep = 10;
 
 
 bool IsTreasuryBlock(int nHeight)
